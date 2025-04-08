@@ -3,6 +3,22 @@
 # make sure to avoid magic values
 # add tasks and assign it to a member if there is anything else needed
 
+# This is a sample list of dictionaries
+student_record = [{
+                    "student_id": "2024-00529-TG-1",
+                    "full_name": "Adriel Joseph Dimayuga",
+                    "program": "BSIT",
+                    "contact_number": "12345678900",
+                    "address": "Adriel Joseph address"
+                   },
+                  {
+                    "student_id": "2024-00529-TG-0",
+                    "full_name": "AJ",
+                    "program": "BSIT",
+                    "contact_number": "12345678900",
+                    "address": "AJ address"
+                  }]
+
 def add_student():
     # TODO (Grace Lim):
     # Add a function that allows the user to input the
