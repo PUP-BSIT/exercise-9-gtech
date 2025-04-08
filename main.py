@@ -2,10 +2,6 @@ import os
 
 MAX_ID_LENGTH = 9
 MAX_CONTACT_LENGTH = 11
-# Make the code readable as it is
-# add comments per block or if necessary
-# make sure to avoid magic values
-# add tasks and assign it to a member if there is anything else needed
 
 # This is a sample list of dictionaries
 student_record = [{
@@ -36,7 +32,7 @@ def add_student(student_list):
         
         # Checks if student_id is numeric and within allowed length   
         student_id = input("\nEnter Student ID"
-                           f"(Must be {MAX_ID_LENGTH} digits): ").strip()
+                           f" (Must be {MAX_ID_LENGTH} digits): ").strip()
             
         if not student_id.isdigit() or len(student_id) != MAX_ID_LENGTH:
             print("Invalid input. Must be numeric and "
@@ -94,38 +90,37 @@ def add_student(student_list):
                 print("Invalid input. Please enter 'yes' or 'no'.")   
 
 def list_students(student_list):
-        clear_screen()
-        print("=== STUDENT RECORD LIST ===\n")
+    clear_screen()
+    print("=== STUDENT RECORD LIST ===\n")
         
-         # Check if the list is empty
-        if not student_list:
-             print("No student records available.")
-        else:
+    # Check if the list is empty
+    if not student_list:
+        print("No student records available.")
+    else:
         # Loop through each student in the list and print their details
-            for student in student_list:
-                print("----------------------------------------------------")
-                print(f"Student ID:           {student['student_id']}")
-                print(f"Student Name:         {student['full_name']}")
-                print(f"Student Program:      {student['program']}")
-                print(f"Contact Number:       {student['contact_number']}")
-                print(f"Address:              {student['address']}")
-                print("----------------------------------------------------")
+        for student in student_list:
+            print("----------------------------------------------------")
+            print(f"Student ID:           {student['student_id']}")
+            print(f"Student Name:         {student['full_name']}")
+            print(f"Student Program:      {student['program']}")
+            print(f"Contact Number:       {student['contact_number']}")
+            print(f"Address:              {student['address']}")
+            print("----------------------------------------------------")
 
-            input("\nPress ENTER to return to the MENU.")
+        input("\nPress ENTER to return to the MENU.")
 
 def update_student(student_list):
     while True:
         clear_screen()
         print("=== UPDATE STUDENT RECORD ===")
         print("-" * 30)
-        #Call the search_student function to locate an existing student record
+        # Call the search_student function to locate an existing student record
         index = search_student(student_list, return_index=True)
 
-        if index is None:
-            print("Student not found. Returning to Menu...")
-            input("Press ENTER to continue...")
+        if index is None:           
+            input("Press ENTER to return to MENU.")
             return 
-        #Retrieve the student's record based on the index 
+        # Retrieve the student's record based on the index 
         student = student_list[index]
         print("\nWhat would you like to update?")
         print("1. Full Name")
@@ -141,36 +136,18 @@ def update_student(student_list):
             input("Press ENTER to continue...")
             return 
         
-        #Handle choices for updating specific records
+        # Handle choices for updating specific records
         match choice:
             case 1:
-                student["full_name"] = input("Enter new full name: ").strip()
-                print("*" * 30)
-                print("NAME UPDATED!")
+                case_1(student)
             case 2:
-                student["program"] = input("Enter new program: ").strip()
-                print("*" * 30)
-                print("PROGRAM UPDATED!")
+                case_2(student)
             case 3:
-                while True:
-                    new_contact = input("Enter new contact number "
-                                        "(11 digits): ").strip()
-                    if (new_contact.isdigit() and 
-                    len(new_contact) == MAX_CONTACT_LENGTH):
-                        
-                        student["contact_number"] = new_contact
-                        print("*" * 30)
-                        print("CONTACT UPDATED!")
-                        break
-                    else:
-                        print("Invalid contact number. Please enter " 
-                             "exactly 11 digits.")
+                case_3(student)
             case 4:
-                student["address"] = input("Enter new address: ").strip()
-                print("*" * 30)
+                case_4(student)
             case 5:
-                print("Returning to Menu")
-                return
+                case_5()
             case _:
                 print("Invalid choice.")
                 input("Press ENTER to return to MENU...")
@@ -183,7 +160,7 @@ def update_student(student_list):
             f"\nStudent ID:     {student_list[index]['student_id']}"
             f"\nName:           {student_list[index]['full_name']}"
             f"\nProgram:        {student_list[index]['program']}"
-            f"\nContact Number:   {student_list[index]['contact_number']}"
+            f"\nContact Number: {student_list[index]['contact_number']}"
             f"\nAddress:        {student_list[index]['address']}"
             "\n-------------------------------------------------------"
             )
@@ -200,6 +177,37 @@ def update_student(student_list):
             else:
                 print("Invalid input. Please enter 'yes' or 'no'.")
 
+def case_1(student):
+    student["full_name"] = input("Enter new full name: ").strip()
+    print("*" * 30)
+    print("NAME UPDATED!")
+    
+def case_2(student):
+    student["program"] = input("Enter new program: ").strip()
+    print("*" * 30)
+    print("PROGRAM UPDATED!")
+    
+def case_3(student):
+    while True:
+        new_contact = input("Enter new contact number "
+                            "(11 digits): ").strip()
+        if (new_contact.isdigit() and 
+            len(new_contact) == MAX_CONTACT_LENGTH):
+            
+            student["contact_number"] = new_contact
+            print("*" * 30)
+            print("CONTACT UPDATED!")
+            break
+        else:
+            print("Invalid contact number. Please enter " 
+                    "exactly 11 digits.")
+        
+def case_4(student):
+    student["address"] = input("Enter new address: ").strip()
+    print("*" * 30)
+    
+def case_5():
+    return print("Returning to Menu")
 
 def delete_student(student_list):
     clear_screen()
@@ -268,18 +276,17 @@ def search_student(student_list, return_index=False):
         print("-" * 30)
         
         # used to track if a student info has been found
-        found = False
+        is_found = False
         matched_index = None
         
         # user is allowed to search using either of the 3 values
-        user_input = input("Search for a student (ID, Name, or Program): ")
+        user_input = input("Search for a student (ID or Name): ")
         match_count = 0
 
         for index in range(0, len(student_list), 1):
             if (
                 student_list[index]["student_id"] == user_input or
-                student_list[index]["full_name"] == user_input or 
-                student_list[index]["program"] == user_input
+                student_list[index]["full_name"] == user_input
                 ):
                 print(
                     "\n-------------------------------------------------------"
@@ -290,11 +297,11 @@ def search_student(student_list, return_index=False):
                     f"\nAddress:        {student_list[index]['address']}"
                     "\n-------------------------------------------------------"
                     )
-                found = True
+                is_found = True
                 match_count += 1
                 matched_index = index 
                 
-        if found == False:
+        if is_found == False:
             print("Student(s) does not exist.")
         
         if return_index:
@@ -344,7 +351,7 @@ def main(student_list):
             search_student(student_list)
         case 6:
             clear_screen()
-            exit("Thank you for using SRS")
+            exit("Thank you for using SRS!")
         case _:
             main(student_list)
 
