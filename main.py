@@ -246,9 +246,9 @@ def delete_student(student_list):
                         break
                 else:
                         print("Invalid input. Please enter 'yes' or 'no'.")
-            else:
+            else: # For non-existing student records
                 delete_student_choice = input(f"Student record "
-                    "deleted successfully. Do you want to "
+                    "does not exist. Do you want to "
                     "delete a record again? (yes/no): ").strip().lower()
                 if delete_student_choice == "yes":
                     continue
