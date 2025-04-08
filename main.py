@@ -80,7 +80,7 @@ def update_student(student_list):
             print("Invalid input. Returning to Menu...")
             input("Press ENTER to continue...")
             return 
-        #Handle choices for updating specific details 
+        #Handle choices for updating specific records
         if choice == 1:
             student["full_name"] = input("Enter new full name: ").strip()
             print("*" * 30)
@@ -115,19 +115,18 @@ def update_student(student_list):
             f"\nAddress:        {student_list[index]['address']}"
             "\n-------------------------------------------------------"
             )
-        user_input = input("\nDo you want to update another record? "
-                           "(yes/no): ").strip().lower()
         
-    #ISSUE: The program loops infinitely if the user inputs something other than 'yes' or 'no'
-    #Need help fixing the input validation to prevent the loop
         while True:
+            user_input = input("\nDo you want to update another record? "
+                           "(yes/no): ").strip().lower()
+            
             if user_input == 'no':
                 print("Returning to Main Menu...")
                 return
             elif user_input == 'yes':
                 break 
             else:
-                print("Invalid input. Returning to Main Menu...")
+                print("Invalid input. Please enter 'yes' or 'no'")
 
 def delete_student():
     # TODO (Hoshea Lopez):
