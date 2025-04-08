@@ -106,3 +106,36 @@ def exit_program():
     # Add a function to exit the program.
     # - Optionally confirm exit before quitting
     pass
+
+def main():
+    
+    # TODO Change the layout of the menu
+    clear_screen()
+    print("STUDENT RECORDS SYSTEM")
+    print("")
+    print("MENU"
+          "\n1. List All Students"
+          "\n2. Add New Student"
+          "\n3. Update a Student Record"
+          "\n4. Delete a Student Record"
+          "\n5. Search Student"
+          "\n6. Exit")
+    print("")
+    user_input = int(input("Enter Choice (1-6): "))
+    
+    match user_input:
+        case 1:
+            list_students()
+        case 2:
+            add_student()
+        case 3:
+            update_student()
+        case 4:
+            delete_student()
+        case 5:
+            search_student()
+        case 6:
+            exit_program()
+
+    
+main()
