@@ -1,3 +1,5 @@
+import os
+
 # Make the code readable as it is
 # add comments per block or if necessary
 # make sure to avoid magic values
@@ -5,20 +7,24 @@
 
 # This is a sample list of dictionaries
 student_record = [{
-                    "student_id": "2024-00529-TG-1",
+                    "student_id": "123456789",
                     "full_name": "Adriel Joseph Dimayuga",
                     "program": "BSIT",
                     "contact_number": "12345678900",
                     "address": "Adriel Joseph address"
                    },
                   {
-                    "student_id": "2024-00529-TG-0",
+                    "student_id": "987654321",
                     "full_name": "AJ",
                     "program": "BSIT",
                     "contact_number": "12345678900",
                     "address": "AJ address"
                   }]
 
+def clear_screen():
+    os.system('cls')
+    os.system('clear')
+    
 def add_student():
     # TODO (Grace Lim):
     # Add a function that allows the user to input the
@@ -66,12 +72,33 @@ def delete_student():
     pass
 
 
-def search_student():
-    # TODO (Adriel Dimayuga):
-    # Add a function to search for a student record.
-    # - Allow searching by ID, name, or program
-    # - Display matching records
-    pass
+def search_student(student_list):
+    clear_screen()
+    
+    # used to track if a student info has been found
+    found = False
+    
+    # user is allowed to search using either of the 3 values
+    user_input = input("Search for a student (ID, Name, or Program): ")
+    for index in range(0, len(student_list), 1):
+        if (
+            student_list[index]["student_id"] == user_input or
+            student_list[index]["full_name"] == user_input or 
+            student_list[index]["program"] == user_input
+            ):
+            print(
+                "\n-------------------------------------------------------"
+                f"\nStudent ID:     {student_list[index]['student_id']}"
+                f"\nName:           {student_list[index]['full_name']}"
+                f"\nProgram:        {student_list[index]['program']}"
+                f"\nContact Info:   {student_list[index]['contact_number']}"
+                f"\nAddress:        {student_list[index]['address']}"
+                "\n-------------------------------------------------------"
+                )
+            found = True
+            
+    if found == False:
+        print("student(s) does not exist")
 
 
 def exit_program():
