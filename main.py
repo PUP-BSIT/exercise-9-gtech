@@ -53,16 +53,81 @@ def list_students():
     # Address:                   123 st. ABC village...
     pass
 
+def update_student(student_list):
+    while True:
+        clear_screen()
+        print("UPDATE STUDENT RECORD")
+        print("-" * 30)
+        #Call the search_student function to locate an existing student record
+        index = search_student(student_list, return_index=True)
 
-def update_student():
-    # TODO (Althea Aragon):
-    # Add a function to update an existing student record.
-    # - First, show the list of student records
-    # - Allow the user to input the key
-    # - Let the user update the value of the inputted key
-    #   - coordinate with (Grace Lim) for restrictions
-    pass
+        if index is None:
+            print("Student not found. Returning to Menu...")
+            input("Press ENTER to continue...")
+            return 
+        #Retrieve the student's record based on the index 
+        student = student_list[index]
+        print("\nWhat would you like to update?")
+        print("1. Full Name")
+        print("2. Program")
+        print("3. Contact Number")
+        print("4. Address")
+        print("5. Exit")
+    
+        try:
+            choice = int(input("Enter choice (1-5): "))
+        except ValueError:
+            print("Invalid input. Returning to Menu...")
+            input("Press ENTER to continue...")
+            return 
+        #Handle choices for updating specific details 
+        if choice == 1:
+            student["full_name"] = input("Enter new full name: ").strip()
+            print("*" * 30)
+            print("NAME UPDATED!")
+        elif choice == 2:
+            student["program"] = input("Enter new program: ").strip()
+            print("*" * 30)
+            print("PROGRAM UPDATED!")
+        elif choice == 3:
+            new_contact = input("Enter new contact number: ").strip()
+            if new_contact.isdigit() and len(new_contact) <= 11:
+                student["contact_number"] = new_contact 
+                print("*" * 30)
+                print("CONTACT UPDATED!")
+            else:
+                print ("Invalid contact number.")
+        elif choice == 5:
+            print("Returning to Menu")
+        else:
+            print("Invalid choice.")
+            input("Press ENTER to return to MENU...")
+            return
 
+        print("-" * 55)
+        print("UPDATED STUDENT RECORD")
+        print(
+            "-------------------------------------------------------"
+            f"\nStudent ID:     {student_list[index]['student_id']}"
+            f"\nName:           {student_list[index]['full_name']}"
+            f"\nProgram:        {student_list[index]['program']}"
+            f"\nContact Info:   {student_list[index]['contact_number']}"
+            f"\nAddress:        {student_list[index]['address']}"
+            "\n-------------------------------------------------------"
+            )
+        user_input = input("\nDo you want to update another record? "
+                           "(yes/no): ").strip().lower()
+        
+    #ISSUE: The program loops infinitely if the user inputs something other than 'yes' or 'no'
+    #Need help fixing the input validation to prevent the loop
+        while True:
+            if user_input == 'no':
+                print("Returning to Main Menu...")
+                return
+            elif user_input == 'yes':
+                break 
+            else:
+                print("Invalid input. Returning to Main Menu...")
 
 def delete_student():
     # TODO (Hoshea Lopez):
@@ -72,15 +137,18 @@ def delete_student():
     # - Confirm before deletion
     pass
 
-
-def search_student(student_list):
+#Added code to be integrated into the update_student function - ALTHEA
+def search_student(student_list, return_index=False):
     clear_screen()
     
     # used to track if a student info has been found
     found = False
+    matched_index = None
     
     # user is allowed to search using either of the 3 values
     user_input = input("Search for a student (ID, Name, or Program): ")
+    match_count = 0
+
     for index in range(0, len(student_list), 1):
         if (
             student_list[index]["student_id"] == user_input or
@@ -97,10 +165,17 @@ def search_student(student_list):
                 "\n-------------------------------------------------------"
                 )
             found = True
+            match_count += 1
+            matched_index = index 
             
     if found == False:
         print("student(s) does not exist")
-
+    
+    if return_index:
+        if match_count == 1:
+            return matched_index
+        return None
+    
     print(input("press ENTER to return to MENU"))
 
 def exit_program():
