@@ -1,6 +1,7 @@
 import os
-import sys
 
+MAX_ID_LENGTH = 9
+MAX_CONTACT_LENGTH = 11
 # Make the code readable as it is
 # add comments per block or if necessary
 # make sure to avoid magic values
@@ -26,32 +27,87 @@ def clear_screen():
     os.system('cls')
     os.system('clear')
     
-def add_student():
-    # TODO (Grace Lim):
-    # Add a function that allows the user to input the
-    # following student details:
-    # A data record should contain 5 fields
-    # - Student ID (Max 9 numbers) (Primary Key)
-    # - Full Name
-    # - Program
-    # - Contact Number (Max 11 numbers)
-    # - Address
-    # All records should be contained in a list
-    # Add restrictions
-    # Ask if the user wants to add another student record (y / n)
-    # Add clear screen everytime the user adds another student record
-    pass
+def add_student(student_list):    
+    add_another_student = "y"
+    
+    while add_another_student == "y":
+        clear_screen()
 
+        print("=== Add New Student ===")
+        
+        # Checks if student_id is numeric and within allowed length   
+        student_id = input(
+            f"\nEnter Student ID (Must be {MAX_ID_LENGTH} digits): "
+                                                                ).strip()
+            
+        if not student_id.isdigit() or len(student_id) != MAX_ID_LENGTH:
+            print("Invalid input. Must be numeric and up to "
+                      f"{MAX_ID_LENGTH} digits.")
+            input("Press ENTER to continue.")
+            
+            # Checks if the Student ID already exists
+        is_duplicate = any(student["student_id"] == student_id
+                               for student in student_list)
+            
+        if is_duplicate:
+                print("Student ID already exists. Please enter a new one.")
 
-def list_students():
-    # TODO (Rain Romero):
-    # Add a function to list/display all student records in the format:
-    # Student ID :               123456789
-    # Student Name :             Juan Tamad
-    # Student Program :          BSIT
-    # Contact Information:       12345678900
-    # Address:                   123 st. ABC village...
-    pass
+        full_name = input("Enter Full Name: ").strip()
+        program = input("Enter Program: ").strip()
+
+            # Checks if contact number is numeric and within allowed length
+        while True:
+            contact_number = input(
+                    f"Enter Contact Number (Must be {MAX_CONTACT_LENGTH} digits): "
+                                                                    ).strip()
+                
+            if (not contact_number.isdigit() or
+                                    len(contact_number) != MAX_CONTACT_LENGTH):
+                print("Invalid contact number. Must be numeric and up to "
+                        f"{MAX_CONTACT_LENGTH} digits.")
+                input("Press ENTER to continue.")
+                continue
+            break
+
+        address = input("Enter Address: ").strip()
+
+        # Create and add new student record
+        student_record = {
+            "student_id": student_id,
+            "full_name": full_name,
+            "program": program,
+            "contact_number": contact_number,
+            "address": address
+            }
+        student_list.append(student_record)
+
+            # Ask if user wants to add another student
+        add_another_student = input("\nAdd another student? "
+                                    "(y/n): ").strip().lower()
+            
+    print("\nStudent(s) added.")
+    input("Press ENTER to return to the MENU.")
+
+def list_students(student_list):
+        clear_screen()
+
+        print("=== STUDENT RECORD LIST ===\n")
+         # Check if the list is empty
+        if not student_list:
+             print("No student records available.")
+        else:
+        # Loop through each student in the list and print their details
+              for student in student_list:
+                 print("-------------------------------------------------------")
+                 print(f"Student ID:           {student['student_id']}")
+                 print(f"Student Name:         {student['full_name']}")
+                 print(f"Student Program:      {student['program']}")
+                 print(f"Contact Information:  {student['contact_number']}")
+                 print(f"Address:              {student['address']}")
+                 print("-------------------------------------------------------")
+
+              input("\nPress ENTER to return to the MENU.")
+              main(student_list)
 
 def update_student(student_list):
     while True:
@@ -81,28 +137,39 @@ def update_student(student_list):
             input("Press ENTER to continue...")
             return 
         #Handle choices for updating specific records
-        if choice == 1:
-            student["full_name"] = input("Enter new full name: ").strip()
-            print("*" * 30)
-            print("NAME UPDATED!")
-        elif choice == 2:
-            student["program"] = input("Enter new program: ").strip()
-            print("*" * 30)
-            print("PROGRAM UPDATED!")
-        elif choice == 3:
-            new_contact = input("Enter new contact number: ").strip()
-            if new_contact.isdigit() and len(new_contact) <= 11:
-                student["contact_number"] = new_contact 
+        match choice:
+            case 1:
+                student["full_name"] = input("Enter new full name: ").strip()
                 print("*" * 30)
-                print("CONTACT UPDATED!")
-            else:
-                print ("Invalid contact number.")
-        elif choice == 5:
-            print("Returning to Menu")
-        else:
-            print("Invalid choice.")
-            input("Press ENTER to return to MENU...")
-            return
+                print("NAME UPDATED!")
+            case 2:
+                student["program"] = input("Enter new program: ").strip()
+                print("*" * 30)
+                print("PROGRAM UPDATED!")
+            case 3:
+                while True:
+                    new_contact = input("Enter new contact number "
+                                        "(11 digits): ").strip()
+                    if (new_contact.isdigit() and 
+                    len(new_contact) == MAX_CONTACT_LENGTH):
+                        
+                        student["contact_number"] = new_contact
+                        print("*" * 30)
+                        print("CONTACT UPDATED!")
+                        break
+                    else:
+                        print("Invalid contact number. Please enter " 
+                             "exactly 11 digits.")
+            case 4:
+                student["address"] = input("Enter new address: ").strip()
+                print("*" * 30)
+            case 5:
+                print("Returning to Menu")
+                return
+            case _:
+                print("Invalid choice.")
+                input("Press ENTER to return to MENU...")
+                return
 
         print("-" * 55)
         print("UPDATED STUDENT RECORD")
@@ -118,15 +185,15 @@ def update_student(student_list):
         
         while True:
             user_input = input("\nDo you want to update another record? "
-                           "(yes/no): ").strip().lower()
+                           "(y/n): ").strip().lower()
             
-            if user_input == 'no':
+            if user_input == 'n':
                 print("Returning to Main Menu...")
                 return
-            elif user_input == 'yes':
+            elif user_input == 'y':
                 break 
             else:
-                print("Invalid input. Please enter 'yes' or 'no'")
+                print("Invalid input. Please enter 'y' or 'N'.")
 
 
 def delete_student(student_list):
@@ -178,44 +245,50 @@ def delete_student(student_list):
 
 #Added code to be integrated into the update_student function - ALTHEA
 def search_student(student_list, return_index=False):
-    clear_screen()
+    search_another_student = "y"
     
-    # used to track if a student info has been found
-    found = False
-    matched_index = None
-    
-    # user is allowed to search using either of the 3 values
-    user_input = input("Search for a student (ID, Name, or Program): ")
-    match_count = 0
+    while search_another_student == "y": 
+        clear_screen()
+        
+        # used to track if a student info has been found
+        found = False
+        matched_index = None
+        
+        # user is allowed to search using either of the 3 values
+        user_input = input("Search for a student (ID, Name, or Program): ")
+        match_count = 0
 
-    for index in range(0, len(student_list), 1):
-        if (
-            student_list[index]["student_id"] == user_input or
-            student_list[index]["full_name"] == user_input or 
-            student_list[index]["program"] == user_input
-            ):
-            print(
-                "\n-------------------------------------------------------"
-                f"\nStudent ID:     {student_list[index]['student_id']}"
-                f"\nName:           {student_list[index]['full_name']}"
-                f"\nProgram:        {student_list[index]['program']}"
-                f"\nContact Info:   {student_list[index]['contact_number']}"
-                f"\nAddress:        {student_list[index]['address']}"
-                "\n-------------------------------------------------------"
-                )
-            found = True
-            match_count += 1
-            matched_index = index 
+        for index in range(0, len(student_list), 1):
+            if (
+                student_list[index]["student_id"] == user_input or
+                student_list[index]["full_name"] == user_input or 
+                student_list[index]["program"] == user_input
+                ):
+                print(
+                    "\n-------------------------------------------------------"
+                    f"\nStudent ID:     {student_list[index]['student_id']}"
+                    f"\nName:           {student_list[index]['full_name']}"
+                    f"\nProgram:        {student_list[index]['program']}"
+                    f"\nContact Number: {student_list[index]['contact_number']}"
+                    f"\nAddress:        {student_list[index]['address']}"
+                    "\n-------------------------------------------------------"
+                    )
+                found = True
+                match_count += 1
+                matched_index = index 
+                
+        if found == False:
+            print("Student(s) does not exist.")
+        
+        if return_index:
+            if match_count == 1:
+                return matched_index
+            return None
+        
+        search_another_student = input("\nSearch another student? "
+                                    "(y/n): ").strip().lower()
             
-    if found == False:
-        print("student(s) does not exist")
-    
-    if return_index:
-        if match_count == 1:
-            return matched_index
-        return None
-    
-    print(input("press ENTER to return to MENU"))
+    print(input("Press ENTER to return to MENU."))
 
 def exit_program():
     # TODO (Grace Lim):
