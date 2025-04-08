@@ -130,28 +130,37 @@ def update_student(student_list):
             input("Press ENTER to continue...")
             return 
         #Handle choices for updating specific records
-        if choice == 1:
-            student["full_name"] = input("Enter new full name: ").strip()
-            print("*" * 30)
-            print("NAME UPDATED!")
-        elif choice == 2:
-            student["program"] = input("Enter new program: ").strip()
-            print("*" * 30)
-            print("PROGRAM UPDATED!")
-        elif choice == 3:
-            new_contact = input("Enter new contact number: ").strip()
-            if new_contact.isdigit() and len(new_contact) == MAX_CONTACT_LENGTH:
-                student["contact_number"] = new_contact 
+        match choice:
+            case 1:
+                student["full_name"] = input("Enter new full name: ").strip()
                 print("*" * 30)
-                print("CONTACT UPDATED!")
-            else:
-                print ("Invalid contact number.")
-        elif choice == 5:
-            print("Returning to Menu")
-        else:
-            print("Invalid choice.")
-            input("Press ENTER to return to MENU...")
-            return
+                print("NAME UPDATED!")
+            case 2:
+                student["program"] = input("Enter new program: ").strip()
+                print("*" * 30)
+                print("PROGRAM UPDATED!")
+            case 3:
+                while True:
+                    new_contact = input("Enter new contact number "
+                                        "(11 digits): ").strip()
+                    if new_contact.isdigit() and len(new_contact) == 11:
+                        student["contact_number"] = new_contact
+                        print("*" * 30)
+                        print("CONTACT UPDATED!")
+                        break
+                    else:
+                        print("Invalid contact number. Please enter " 
+                             "exactly 11 digits.")
+            case 4:
+                student["address"] = input("Enter new address: ").strip()
+                print("*" * 30)
+            case 5:
+                print("Returning to Menu")
+                return
+            case _:
+                print("Invalid choice.")
+                input("Press ENTER to return to MENU...")
+                return
 
         print("-" * 55)
         print("UPDATED STUDENT RECORD")
