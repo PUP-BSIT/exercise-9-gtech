@@ -1,4 +1,5 @@
 import os
+import sys
 
 # Make the code readable as it is
 # add comments per block or if necessary
@@ -100,6 +101,7 @@ def search_student(student_list):
     if found == False:
         print("student(s) does not exist")
 
+    print(input("press ENTER to return to MENU"))
 
 def exit_program():
     # TODO (Grace Lim):
@@ -107,9 +109,9 @@ def exit_program():
     # - Optionally confirm exit before quitting
     pass
 
-def main():
+def main(student_list):
     
-    # TODO Change the layout of the menu
+# TODO Change the layout of the menu
     clear_screen()
     print("STUDENT RECORDS SYSTEM")
     print("")
@@ -123,19 +125,23 @@ def main():
     print("")
     user_input = int(input("Enter Choice (1-6): "))
     
+# If user_input is equal to any of the cases, it will run the function under that case
     match user_input:
         case 1:
-            list_students()
+            list_students(student_list)
         case 2:
-            add_student()
+            add_student(student_list)
         case 3:
-            update_student()
+            update_student(student_list)
         case 4:
-            delete_student()
+            delete_student(student_list)
         case 5:
-            search_student()
+            search_student(student_list)
         case 6:
-            exit_program()
+            clear_screen()
+            exit("Thank you for using SRS")
+        case _:
+            main(student_list)
 
-    
-main()
+while True:
+    main(student_record)
