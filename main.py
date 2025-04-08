@@ -128,13 +128,53 @@ def update_student(student_list):
             else:
                 print("Invalid input. Please enter 'yes' or 'no'")
 
-def delete_student():
-    # TODO (Hoshea Lopez):
-    # Add a function to delete a student record.
-    # - Show a list of student names
-    # - Allow the user to input the name for the record they want to delete
-    # - Confirm before deletion
-    pass
+
+def delete_student(student_list):
+    clear_screen()
+    print("DELETE STUDENT RECORD")
+    print("-" * 30)
+
+    if not student_list:
+        print("No student records to delete.")
+        input("Press ENTER to return to menu...")
+        return
+
+    # Display all student records
+    print("List of Students:")
+    for student in student_list:
+        print(f"- {student['full_name']}")
+
+    # Loop until a valid student name is an existing record
+    while True:
+        selection = input("\nEnter the full name of the student you want to delete: ").strip()
+
+        matched_student = None
+        for student in student_list:
+            if student['full_name'].lower() == selection.lower():
+                matched_student = student
+                break
+
+        if matched_student:
+            print("\nSelected student:")
+            print(f"Name: {matched_student['full_name']}")
+            print(f"ID: {matched_student['student_id']}")
+
+            confirm = input("Are you sure you want to delete this student? (yes/no): ").strip().lower()
+            if confirm == "yes":
+                student_list.remove(matched_student)
+                print("Student record deleted successfully.")
+            else:
+                print("Deletion canceled.")
+            break  # Exit the retry loop after valid processing
+        else:
+            delete_student_choice = input(f"No student named '{selection}' found. Do you want to search again? (yes/no): ").strip().lower()
+            if delete_student_choice == "yes":
+                continue
+            elif delete_student_choice == "no":
+                break
+            else:
+                print("Invalid input. Please enter 'yes' or 'no'.")
+
 
 #Added code to be integrated into the update_student function - ALTHEA
 def search_student(student_list, return_index=False):
