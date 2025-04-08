@@ -28,68 +28,65 @@ def clear_screen():
     os.system('clear')
     
 def add_student(student_list):    
-    while True:
+    add_another_student = "y"
+    
+    while add_another_student == "y":
         clear_screen()
 
         print("=== Add New Student ===")
         
-        # Checks if student_id is numeric and within allowed length
-        while True:   
-            clear_screen()     
-            student_id = input(
-                f"\nEnter Student ID (Must be {MAX_ID_LENGTH} digits): "
+        # Checks if student_id is numeric and within allowed length   
+        student_id = input(
+            f"\nEnter Student ID (Must be {MAX_ID_LENGTH} digits): "
                                                                 ).strip()
             
-            if not student_id.isdigit() or len(student_id) != MAX_ID_LENGTH:
-                print("Invalid input. Must be numeric and up to "
+        if not student_id.isdigit() or len(student_id) != MAX_ID_LENGTH:
+            print("Invalid input. Must be numeric and up to "
                       f"{MAX_ID_LENGTH} digits.")
-                input("Press ENTER to continue.")
-                continue
+            input("Press ENTER to continue.")
             
             # Checks if the Student ID already exists
-            is_duplicate = any(student["student_id"] == student_id
+        is_duplicate = any(student["student_id"] == student_id
                                for student in student_list)
             
-            if is_duplicate:
+        if is_duplicate:
                 print("Student ID already exists. Please enter a new one.")
-                continue
 
-            full_name = input("Enter Full Name: ").strip()
-            program = input("Enter Program: ").strip()
+        full_name = input("Enter Full Name: ").strip()
+        program = input("Enter Program: ").strip()
 
             # Checks if contact number is numeric and within allowed length
-            while True:
-                contact_number = input(
+        while True:
+            contact_number = input(
                     f"Enter Contact Number (Must be {MAX_CONTACT_LENGTH} digits): "
                                                                     ).strip()
                 
-                if (not contact_number.isdigit() or
+            if (not contact_number.isdigit() or
                                     len(contact_number) != MAX_CONTACT_LENGTH):
-                    print("Invalid contact number. Must be numeric and up to "
+                print("Invalid contact number. Must be numeric and up to "
                         f"{MAX_CONTACT_LENGTH} digits.")
-                    input("Press ENTER to continue.")
-                    continue
-                break
+                input("Press ENTER to continue.")
+                continue
+            break
 
-            address = input("Enter Address: ").strip()
+        address = input("Enter Address: ").strip()
 
-            # Create and add new student record
-            student_record = {
-                "student_id": student_id,
-                "full_name": full_name,
-                "program": program,
-                "contact_number": contact_number,
-                "address": address
+        # Create and add new student record
+        student_record = {
+            "student_id": student_id,
+            "full_name": full_name,
+            "program": program,
+            "contact_number": contact_number,
+            "address": address
             }
-            student_list.append(student_record)
+        student_list.append(student_record)
 
             # Ask if user wants to add another student
-            add_another_student = input("\nAdd another student? "
-                                                    "(y/n): ").strip().lower()
-            if add_another_student != 'y':
-                print("\nStudent(s) added.")
-                input("Press ENTER to return to the MENU.")
-                main(student_list)
+        add_another_student = input("\nAdd another student? "
+                                    "(y/n): ").strip().lower()
+            
+    print("\nStudent(s) added.")
+    input("Press ENTER to return to the MENU.")
 
 def list_students():
     # TODO (Rain Romero):
@@ -197,46 +194,50 @@ def delete_student():
 
 #Added code to be integrated into the update_student function - ALTHEA
 def search_student(student_list, return_index=False):
-    clear_screen()
+    search_another_student = "y"
     
-    # used to track if a student info has been found
-    found = False
-    matched_index = None
-    
-    # user is allowed to search using either of the 3 values
-    user_input = input("Search for a student (ID, Name, or Program): ")
-    match_count = 0
+    while search_another_student == "y": 
+        clear_screen()
+        
+        # used to track if a student info has been found
+        found = False
+        matched_index = None
+        
+        # user is allowed to search using either of the 3 values
+        user_input = input("Search for a student (ID, Name, or Program): ")
+        match_count = 0
 
-    for index in range(0, len(student_list), 1):
-        if (
-            student_list[index]["student_id"] == user_input or
-            student_list[index]["full_name"] == user_input or 
-            student_list[index]["program"] == user_input
-            ):
-            print(
-                "\n-------------------------------------------------------"
-                f"\nStudent ID:     {student_list[index]['student_id']}"
-                f"\nName:           {student_list[index]['full_name']}"
-                f"\nProgram:        {student_list[index]['program']}"
-                f"\nContact Number: {student_list[index]['contact_number']}"
-                f"\nAddress:        {student_list[index]['address']}"
-                "\n-------------------------------------------------------"
-                )
-            found = True
-            match_count += 1
-            matched_index = index 
+        for index in range(0, len(student_list), 1):
+            if (
+                student_list[index]["student_id"] == user_input or
+                student_list[index]["full_name"] == user_input or 
+                student_list[index]["program"] == user_input
+                ):
+                print(
+                    "\n-------------------------------------------------------"
+                    f"\nStudent ID:     {student_list[index]['student_id']}"
+                    f"\nName:           {student_list[index]['full_name']}"
+                    f"\nProgram:        {student_list[index]['program']}"
+                    f"\nContact Number: {student_list[index]['contact_number']}"
+                    f"\nAddress:        {student_list[index]['address']}"
+                    "\n-------------------------------------------------------"
+                    )
+                found = True
+                match_count += 1
+                matched_index = index 
+                
+        if found == False:
+            print("Student(s) does not exist.")
+        
+        if return_index:
+            if match_count == 1:
+                return matched_index
+            return None
+        
+        search_another_student = input("\nSearch another student? "
+                                    "(y/n): ").strip().lower()
             
-    if found == False:
-        print("Student(s) does not exist.")
-    
-    if return_index:
-        if match_count == 1:
-            return matched_index
-        return None
-    
     print(input("Press ENTER to return to MENU."))
-    # Call the main function to return to the main menu
-    main(student_list)
 
 def exit_program():
     # TODO (Grace Lim):
