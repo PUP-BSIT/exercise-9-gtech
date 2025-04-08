@@ -88,15 +88,26 @@ def add_student(student_list):
     print("\nStudent(s) added.")
     input("Press ENTER to return to the MENU.")
 
-def list_students():
-    # TODO (Rain Romero):
-    # Add a function to list/display all student records in the format:
-    # Student ID :               123456789
-    # Student Name :             Juan Tamad
-    # Student Program :          BSIT
-    # Contact Information:       12345678900
-    # Address:                   123 st. ABC village...
-    pass
+def list_students(student_list):
+        clear_screen()
+
+        print("=== STUDENT RECORD LIST ===\n")
+         # Check if the list is empty
+        if not student_list:
+             print("No student records available.")
+        else:
+        # Loop through each student in the list and print their details
+              for student in student_list:
+                 print("-------------------------------------------------------")
+                 print(f"Student ID:           {student['student_id']}")
+                 print(f"Student Name:         {student['full_name']}")
+                 print(f"Student Program:      {student['program']}")
+                 print(f"Contact Information:  {student['contact_number']}")
+                 print(f"Address:              {student['address']}")
+                 print("-------------------------------------------------------")
+
+              input("\nPress ENTER to return to the MENU.")
+              main(student_list)
 
 def update_student(student_list):
     while True:
