@@ -1,5 +1,4 @@
 import os
-import sys
 
 MAX_ID_LENGTH = 9
 MAX_CONTACT_LENGTH = 11
@@ -143,7 +142,9 @@ def update_student(student_list):
                 while True:
                     new_contact = input("Enter new contact number "
                                         "(11 digits): ").strip()
-                    if new_contact.isdigit() and len(new_contact) == 11:
+                    if (new_contact.isdigit() and 
+                    len(new_contact) == MAX_CONTACT_LENGTH):
+                        
                         student["contact_number"] = new_contact
                         print("*" * 30)
                         print("CONTACT UPDATED!")
@@ -176,15 +177,15 @@ def update_student(student_list):
         
         while True:
             user_input = input("\nDo you want to update another record? "
-                           "(yes/no): ").strip().lower()
+                           "(y/n): ").strip().lower()
             
-            if user_input == 'no':
+            if user_input == 'n':
                 print("Returning to Main Menu...")
                 return
-            elif user_input == 'yes':
+            elif user_input == 'y':
                 break 
             else:
-                print("Invalid input. Please enter 'yes' or 'no'")
+                print("Invalid input. Please enter 'y' or 'N'.")
 
 def delete_student():
     # TODO (Hoshea Lopez):
