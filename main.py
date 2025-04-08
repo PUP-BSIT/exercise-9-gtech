@@ -2,10 +2,6 @@ import os
 
 MAX_ID_LENGTH = 9
 MAX_CONTACT_LENGTH = 11
-# Make the code readable as it is
-# add comments per block or if necessary
-# make sure to avoid magic values
-# add tasks and assign it to a member if there is anything else needed
 
 # This is a sample list of dictionaries
 student_record = [{
@@ -36,7 +32,7 @@ def add_student(student_list):
         
         # Checks if student_id is numeric and within allowed length   
         student_id = input("\nEnter Student ID"
-                           f"(Must be {MAX_ID_LENGTH} digits): ").strip()
+                           f" (Must be {MAX_ID_LENGTH} digits): ").strip()
             
         if not student_id.isdigit() or len(student_id) != MAX_ID_LENGTH:
             print("Invalid input. Must be numeric and "
@@ -118,14 +114,13 @@ def update_student(student_list):
         clear_screen()
         print("=== UPDATE STUDENT RECORD ===")
         print("-" * 30)
-        #Call the search_student function to locate an existing student record
+        # Call the search_student function to locate an existing student record
         index = search_student(student_list, return_index=True)
 
-        if index is None:
-            print("Student not found. Returning to Menu...")
-            input("Press ENTER to continue...")
+        if index is None:           
+            input("Press ENTER to return to MENU.")
             return 
-        #Retrieve the student's record based on the index 
+        # Retrieve the student's record based on the index 
         student = student_list[index]
         print("\nWhat would you like to update?")
         print("1. Full Name")
@@ -141,7 +136,7 @@ def update_student(student_list):
             input("Press ENTER to continue...")
             return 
         
-        #Handle choices for updating specific records
+        # Handle choices for updating specific records
         match choice:
             case 1:
                 case_1(student)
@@ -356,7 +351,7 @@ def main(student_list):
             search_student(student_list)
         case 6:
             clear_screen()
-            exit("Thank you for using SRS")
+            exit("Thank you for using SRS!")
         case _:
             main(student_list)
 
