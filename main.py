@@ -29,7 +29,7 @@ def add_student(student_list):
             input("Press ENTER to continue.")
             continue
         
-        # Checks if the Student ID already exists
+        # Checks if any student in the student_list has a matching student_id
         is_duplicate = any(student["student_id"] == student_id for 
                            student in student_list)
             
@@ -39,7 +39,7 @@ def add_student(student_list):
         full_name = input("Enter Full Name: ").strip()
         program = input("Enter Program: ").strip()
 
-        # Checks if contact number is numeric and within allowed length
+        # Checks if contact_number is numeric and within allowed length
         while True:
             contact_number = input(f"Enter Contact Number (Must be "
                                    f"{MAX_CONTACT_LENGTH} digits): ").strip()
@@ -155,7 +155,7 @@ def update_student(student_list):
                 return
             
         print("-" * 55)
-        print("=== UPDATED STUDENT RECORD ===")
+        print("\t\t=== UPDATED STUDENT RECORD ===")
         print(
             "-------------------------------------------------------"
             f"\nStudent ID:     {student_list[index]['student_id']}"
@@ -181,14 +181,14 @@ def update_student(student_list):
 def case_1(student):
     clear_screen()
     student["full_name"] = input("Enter new full name: ").strip()
-    print("*" * 30)
-    print("\nNAME UPDATED!")
+    print("-" * 55)
+    print("NAME UPDATED!")
     
 def case_2(student):
     clear_screen()
     student["program"] = input("Enter new program: ").strip()
-    print("*" * 30)
-    print("\nPROGRAM UPDATED!")
+    print("-" * 55)
+    print("PROGRAM UPDATED!")
     
 def case_3(student):
     while True:
@@ -198,8 +198,8 @@ def case_3(student):
             len(new_contact) == MAX_CONTACT_LENGTH):
             clear_screen()
             student["contact_number"] = new_contact
-            print("*" * 30)
-            print("\nCONTACT UPDATED!")
+            print("-" * 55)
+            print("CONTACT UPDATED!")
             break
         else:
             print("Invalid contact number. Please enter " 
@@ -208,8 +208,8 @@ def case_3(student):
 def case_4(student):
     clear_screen()
     student["address"] = input("Enter new address: ").strip()
-    print("*" * 30)
-    print("\nADDRESS UPDATED!")
+    print("-" * 55)
+    print("ADDRESS UPDATED!")
 
 def delete_student(student_list):
     clear_screen()
@@ -223,9 +223,9 @@ def delete_student(student_list):
         return
 
     # Display all student records
-    print ("-" * 55)
-    print("\t\t=== LIST OF STUDENTS ===")
-    print ("-" * 55)
+    print ("-" * 65)
+    print("\t\t\t=== LIST OF STUDENTS ===")
+    print ("-" * 65)
     for student in student_list:
         print(f"- {student['full_name']}")
 
@@ -243,7 +243,7 @@ def delete_student(student_list):
         if matched_student:
             print("\nSelected student:")
             print(f"Name: {matched_student['full_name']}")
-            print(f"ID: {matched_student['student_id']}")
+            print(f"ID:   {matched_student['student_id']}")
 
             confirm = input("Are you sure you want to delete"
                             " this student? (y/n): ").strip().lower()
