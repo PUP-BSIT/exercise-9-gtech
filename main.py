@@ -34,7 +34,9 @@ def add_student(student_list):
                            student in student_list)
             
         if is_duplicate:
-            print("Student ID already exists. Please enter a new one.")
+            print(input("Student ID already exists. Please enter a new one."))
+            input("Press ENTER to continue")
+            continue
 
         full_name = input("Enter Full Name: ").strip()
         program = input("Enter Program: ").strip()
@@ -219,7 +221,7 @@ def delete_student(student_list):
 
     if not student_list:
         print("No student records to delete.")
-        input("Press ENTER to return to menu...")
+        input("Press ENTER to return to MENU.")
         return
 
     # Display all student records
@@ -245,29 +247,46 @@ def delete_student(student_list):
             print(f"Name: {matched_student['full_name']}")
             print(f"ID:   {matched_student['student_id']}")
 
-            confirm = input("Are you sure you want to delete"
-                            " this student? (y/n): ").strip().lower()
-            if confirm == "y":
-                student_list.remove(matched_student)
-                delete_student_choice = input(f"Student record "
-                    "deleted successfully. Do you want to "
-                    "delete a record again? (y/n): ").strip().lower()
-                if delete_student_choice == "y":
-                        continue
-                elif delete_student_choice == "n":
-                        print(input("Press ENTER to return to MENU."))
-                        break
+            while True:
+                confirm = input("Are you sure you want to delete"
+                                " this student? (y/n): ").strip().lower()
+                if confirm == "y":
+                    student_list.remove(matched_student)
+                    while True:
+                        delete_student_choice = input(f"Student record "
+                            "deleted successfully. Do you want to "
+                            "delete a record again? (y/n): ").strip().lower()
+                        if delete_student_choice == "y":
+                            continue
+                        elif delete_student_choice == "n":
+                            print(input("Press ENTER to return to MENU."))
+                            return
+                        else:
+                            print("Invalid input. Please enter 'y' or 'n'.")
+                elif confirm == 'n':
+                    while True:
+                        delete_student_choice = input(f"Student record "
+                            "deletion withdrawn. Do you want to "
+                            "delete a record again? (y/n): ").strip().lower()
+                        if delete_student_choice == "y":
+                            continue
+                        elif delete_student_choice == "n":
+                            print(input("Press ENTER to return to MENU."))
+                            return
+                        else:
+                            print("Invalid input. Please enter 'y' or 'n'.")
                 else:
-                        print("Invalid input. Please enter 'y' or 'n'.")
-            else: # For non-existing student records
+                    print("Invalid input. Please enter 'y' or 'n'.")
+        else: # For non-existing student records
+            while True:
                 delete_student_choice = input(f"Student record "
-                    "does not exist. Do you want to "
-                    "delete a record again? (y/n): ").strip().lower()
+                    "does not exist. Do you want to enter an exisiting "
+                    "record to delete? (y/n): ").strip().lower()
                 if delete_student_choice == "y":
-                    continue
+                    break
                 elif delete_student_choice == "n":
                     print(input("Press ENTER to return to MENU."))
-                    break
+                    return
                 else:
                     print("Invalid input. Please enter 'y' or 'n'.")
 
