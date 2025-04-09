@@ -3,21 +3,8 @@ import os
 MAX_ID_LENGTH = 9
 MAX_CONTACT_LENGTH = 11
 
-# list of dicitionaries
-student_record = [{
-                    "student_id": "123456789",
-                    "full_name": "Adriel Joseph Dimayuga",
-                    "program": "BSIT",
-                    "contact_number": "12345678900",
-                    "address": "Adriel Joseph address"
-                   },
-                  {
-                    "student_id": "987654321",
-                    "full_name": "AJ",
-                    "program": "BSIT",
-                    "contact_number": "12345678900",
-                    "address": "AJ address"
-                  }]
+# list of dictionaries
+student_record = []
 
 def clear_screen():
     os.system('cls')
@@ -28,7 +15,9 @@ def add_student(student_list):
     
     while add_another_student == "y":
         clear_screen()
-        print("=== ADD NEW STUDENT RECORD ===")
+        print("*" * 65)
+        print("\t\t=== ADD NEW STUDENT RECORD ===")
+        print("*" * 65)
         
         # Checks if student_id is numeric and within allowed length   
         student_id = input("\nEnter Student ID"
@@ -77,7 +66,8 @@ def add_student(student_list):
         student_list.append(student_record)
 
         while True:
-            add_another_student = input("\nDo you want to add another student? (y/n): ").strip().lower()
+            add_another_student = input("\nDo you want to add another " 
+                                        "student? (y/n): ").strip().lower()
             
             if add_another_student not in ('y', 'n'):
                 print("Invalid input. Please enter 'y' or 'n'.")
@@ -91,7 +81,9 @@ def add_student(student_list):
 
 def list_students(student_list):
     clear_screen()
-    print("=== STUDENT RECORD LIST ===\n")
+    print("*" * 65)
+    print("\t\t=== STUDENT RECORD LIST ===")
+    print("*" * 65)
         
     # Check if the list is empty
     if not student_list:
@@ -113,14 +105,24 @@ def update_student(student_list):
     
     while update_another_student == "y":
         clear_screen()
-        print("=== UPDATE STUDENT RECORD ===")
-        print("-" * 30)
+        print("*" * 65)
+        print("\t\t=== UPDATE STUDENT RECORD ===")
+        print("*" * 65)
         # Call the search_student function to locate an existing student record
         index = search_student(student_list, return_index_flag=True)
 
-        if index is None:           
-            input("Press ENTER to return to MENU.")
-            return 
+        if index is None: 
+            while True:
+                input_again = input("\nStudent not found. Do you want to try" 
+                                   " another input? (y/n): ").strip().lower()          
+                if input_again == 'y':
+                    break 
+                elif input_again == 'n':
+                    print(input("Press ENTER to return to MENU."))
+                    return 
+                else:
+                    print("Invalid input. Please enter 'y' or 'n")
+            continue  
         # Retrieve the student's record based on the index 
         student = student_list[index]
         print("\nWhat would you like to update?")
@@ -133,10 +135,9 @@ def update_student(student_list):
         try:
             choice = int(input("Enter choice (1-5): "))
         except ValueError:
-            print("Invalid input. Returning to Menu...")
-            input("Press ENTER to continue...")
+            print("Invalid input.")
+            input("\nPress ENTER to continue...")
             return 
-        
         # Handle choices for updating specific records
         match choice:
             case 1:
@@ -148,11 +149,11 @@ def update_student(student_list):
             case 4:
                 case_4(student)
             case 5:
-                case_5()
-            case _:
-                input("Invalid choice")
                 return
-
+            case _:
+                input("Invalid input.")
+                return
+            
         print("-" * 55)
         print("=== UPDATED STUDENT RECORD ===")
         print(
@@ -164,30 +165,30 @@ def update_student(student_list):
             f"\nAddress:        {student_list[index]['address']}"
             "\n-------------------------------------------------------"
             )
-        
+        # Prompt the user if they want to update another student record
         while True:
             update_another_record = input("\nDo you want to update another "
-                                          "record? (yes/no): ").strip().lower()
+                                          "record? (y/n): ").strip().lower()
             
-            if update_another_record == 'no':
+            if update_another_record == 'n':
                 print(input("Press ENTER to return to MENU."))
                 return
-            elif update_another_record == 'yes':
+            elif update_another_record == 'y':
                 break 
             else:
-                print("Invalid input. Please enter 'yes' or 'no'.")
+                print("Invalid input. Please enter 'y' or 'n'.")
 
 def case_1(student):
     clear_screen()
     student["full_name"] = input("Enter new full name: ").strip()
     print("*" * 30)
-    print("NAME UPDATED!")
+    print("\nNAME UPDATED!")
     
 def case_2(student):
     clear_screen()
     student["program"] = input("Enter new program: ").strip()
     print("*" * 30)
-    print("PROGRAM UPDATED!")
+    print("\nPROGRAM UPDATED!")
     
 def case_3(student):
     while True:
@@ -198,7 +199,7 @@ def case_3(student):
             clear_screen()
             student["contact_number"] = new_contact
             print("*" * 30)
-            print("CONTACT UPDATED!")
+            print("\nCONTACT UPDATED!")
             break
         else:
             print("Invalid contact number. Please enter " 
@@ -208,14 +209,13 @@ def case_4(student):
     clear_screen()
     student["address"] = input("Enter new address: ").strip()
     print("*" * 30)
-    print("ADDRESS UPDATED!")
-def case_5():
-    return print("Returning to Menu")
+    print("\nADDRESS UPDATED!")
 
 def delete_student(student_list):
     clear_screen()
-    print("=== DELETE STUDENT RECORD ===")
-    print("-" * 30)
+    print("*" * 65)
+    print("\t\t\t=== DELETE STUDENT RECORD ===")
+    print("*" * 65)
 
     if not student_list:
         print("No student records to delete.")
@@ -223,7 +223,9 @@ def delete_student(student_list):
         return
 
     # Display all student records
-    print("List of Students:")
+    print ("-" * 55)
+    print("\t\t=== LIST OF STUDENTS ===")
+    print ("-" * 55)
     for student in student_list:
         print(f"- {student['full_name']}")
 
@@ -244,39 +246,39 @@ def delete_student(student_list):
             print(f"ID: {matched_student['student_id']}")
 
             confirm = input("Are you sure you want to delete"
-                            " this student? (yes/no): ").strip().lower()
-            if confirm == "yes":
+                            " this student? (y/n): ").strip().lower()
+            if confirm == "y":
                 student_list.remove(matched_student)
                 delete_student_choice = input(f"Student record "
                     "deleted successfully. Do you want to "
-                    "delete a record again? (yes/no): ").strip().lower()
-                if delete_student_choice == "yes":
+                    "delete a record again? (y/n): ").strip().lower()
+                if delete_student_choice == "y":
                         continue
-                elif delete_student_choice == "no":
+                elif delete_student_choice == "n":
                         print(input("Press ENTER to return to MENU."))
                         break
                 else:
-                        print("Invalid input. Please enter 'yes' or 'no'.")
+                        print("Invalid input. Please enter 'y' or 'n'.")
             else: # For non-existing student records
                 delete_student_choice = input(f"Student record "
                     "does not exist. Do you want to "
-                    "delete a record again? (yes/no): ").strip().lower()
-                if delete_student_choice == "yes":
+                    "delete a record again? (y/n): ").strip().lower()
+                if delete_student_choice == "y":
                     continue
-                elif delete_student_choice == "no":
+                elif delete_student_choice == "n":
                     print(input("Press ENTER to return to MENU."))
                     break
                 else:
-                    print("Invalid input. Please enter 'yes' or 'no'.")
-
+                    print("Invalid input. Please enter 'y' or 'n'.")
 
 def search_student(student_list, return_index_flag=False):
-    search_another_student = "yes"
+    search_another_student = "y"
     
-    while search_another_student == "yes": 
+    while search_another_student == "y": 
         clear_screen()
-        print("=== SEARCH STUDENT RECORD ===")
-        print("-" * 30)
+        print("*" * 65)
+        print("\t\t=== SEARCH STUDENT RECORD ===")
+        print("*" * 65)
         
         # used to track if a student info has been found
         is_found = False
@@ -313,29 +315,31 @@ def search_student(student_list, return_index_flag=False):
 
         while True:
             search_another_student = input("\nDo you want to search another "
-                                          "record? (yes/no): ").strip().lower()
+                                          "record? (y/n): ").strip().lower()
             
-            if search_another_student == 'no':
-                print(input("Press ENTER to return to MENU."))
+            if search_another_student == 'n':
+                print(input("\nPress ENTER to return to MENU."))
                 return
-            elif search_another_student == 'yes':
+            elif search_another_student == 'y':
                 break 
             else:
-                print("Invalid input. Please enter 'yes' or 'no'.")
+                print("Invalid input. Please enter 'y' or 'n'.")
 
 def main(student_list):
     
     clear_screen()
-    print("***** STUDENT RECORDS SYSTEM *****")
-    print("")
-    print("MENU"
+    print("*" * 60)
+    print("\t\t=== STUDENT RECORDS SYSTEM ===")
+    print("*" * 60)
+    print("\t\t\t MAIN MENU"
+          "\n------------------------------------------------------------"
           "\n1. List All Students"
           "\n2. Add New Student"
           "\n3. Update a Student Record"
           "\n4. Delete a Student Record"
           "\n5. Search Student"
-          "\n6. Exit")
-    print("")
+          "\n6. Exit"
+          "\n------------------------------------------------------------")
     user_input = int(input("Enter Choice (1-6): "))
     
     match user_input:
