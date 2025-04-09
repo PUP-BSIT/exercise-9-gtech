@@ -34,7 +34,7 @@ def add_student(student_list):
                            student in student_list)
             
         if is_duplicate:
-            print(input("Student ID already exists. Please enter a new one."))
+            print("Student ID already exists. Please enter a new one.")
             input("Press ENTER to continue")
             continue
 
@@ -234,53 +234,45 @@ def delete_student(student_list):
     # Loop until a valid student name is an existing record
     while True:
         selection = input("\nEnter the full name of the "
-                          "student you want to delete: ").strip()
-
+                        "student you want to delete: ").strip()
         matched_student = None
         for student in student_list:
             if student['full_name'].lower() == selection.lower():
                 matched_student = student
                 break
-
         if matched_student:
             print("\nSelected student:")
             print(f"Name: {matched_student['full_name']}")
             print(f"ID:   {matched_student['student_id']}")
-
             while True:
                 confirm = input("Are you sure you want to delete"
                                 " this student? (y/n): ").strip().lower()
                 if confirm == "y":
                     student_list.remove(matched_student)
-                    while True:
-                        delete_student_choice = input(f"Student record "
-                            "deleted successfully. Do you want to "
-                            "delete a record again? (y/n): ").strip().lower()
-                        if delete_student_choice == "y":
-                            continue
-                        elif delete_student_choice == "n":
-                            print(input("Press ENTER to return to MENU."))
-                            return
-                        else:
-                            print("Invalid input. Please enter 'y' or 'n'.")
+                    print(f"Student record deleted successfully.")
+                    break  # Exits confirmation loop
                 elif confirm == 'n':
-                    while True:
-                        delete_student_choice = input(f"Student record "
-                            "deletion withdrawn. Do you want to "
-                            "delete a record again? (y/n): ").strip().lower()
-                        if delete_student_choice == "y":
-                            continue
-                        elif delete_student_choice == "n":
-                            print(input("Press ENTER to return to MENU."))
-                            return
-                        else:
-                            print("Invalid input. Please enter 'y' or 'n'.")
+                    print("Student record deletion withdrawn.")
+                    break
                 else:
                     print("Invalid input. Please enter 'y' or 'n'.")
-        else: # For non-existing student records
+            # After confirmation, checks if user wants to delete another record
+            delete_another = True
+            while delete_another:
+                delete_student_choice = input(f"Do you want to "
+                        "delete a record again? (y/n): ").strip().lower()
+                if delete_student_choice == "y":
+                    delete_another = False  # Reset flag to continue deleting
+                    break
+                elif delete_student_choice == "n":
+                    print(input("Press ENTER to return to MENU."))
+                    return
+                else:
+                    print("Invalid input. Please enter 'y' or 'n'.")
+        else:  # For non-existing student records
             while True:
                 delete_student_choice = input(f"Student record "
-                    "does not exist. Do you want to enter an exisiting "
+                    "does not exist. Do you want to enter an existing "
                     "record to delete? (y/n): ").strip().lower()
                 if delete_student_choice == "y":
                     break
